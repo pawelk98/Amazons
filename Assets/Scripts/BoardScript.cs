@@ -13,9 +13,14 @@ public class BoardScript : MonoBehaviour
     }
     public List<GameObject> pawnPrefabs;
     public GameObject arrowPrefab;
+    public List<Vector2Int> startCoords;
     GameObject[] pawns;
     List<GameObject> arrows;
     Fields[,] board;
+    [HideInInspector]
+    public bool round;
+    bool playerAHasMoves;
+    bool playerBHasMoves;
 
 
     void Start()
@@ -29,18 +34,35 @@ public class BoardScript : MonoBehaviour
         board = new Fields[10, 10];
         arrows = new List<GameObject>();
         pawns = new GameObject[8];
+        for (int i = 0; i < 8; i++)
+        {
+            pawns[i] = Instantiate(i < 4 ? pawnPrefabs[0] : pawnPrefabs[1],
+            GetScenePosition(startCoords[i]), Quaternion.identity);
+            pawns[i].GetComponent<PawnScript>().boardScript = this;
 
-        pawns[0] = Instantiate(pawnPrefabs[0],
-        GetScenePosition(new Vector2(2, 2)), Quaternion.identity);
-        pawns[0].GetComponent<PawnScript>().boardScript = this;
-
-        board[2,2] = Fields.PawnA;
+            board[startCoords[i].x, startCoords[i].y] = i < 4 ? Fields.PawnA : Fields.PawnB;
+        }
     }
 
     void GenerateAllLegalMoves()
     {
-        PawnScript pawnScript = pawns[0].GetComponent<PawnScript>();
-        pawnScript.GenerateLegalMoves();
+        playerAHasMoves = playerBHasMoves = false;
+
+        for (int i = 0; i < 8; i++)
+        {
+            PawnScript pawnScript = pawns[i].GetComponent<PawnScript>();
+            pawnScript.GenerateLegalMoves();
+
+            if (!pawnScript.isBlocked && i < 4)
+                playerAHasMoves = true;
+            else if (!pawnScript.isBlocked && i >= 4)
+                playerBHasMoves = true;
+        }
+
+        if (!playerAHasMoves)
+            Debug.Log("PLAYER B WINS");
+        if (!playerBHasMoves)
+            Debug.Log("PLAYER A WINS");
     }
 
     public bool IsActionLegal(Vector2Int position)
@@ -80,6 +102,7 @@ public class BoardScript : MonoBehaviour
         GameObject arrow = Instantiate(arrowPrefab, GetScenePosition(arrowPos), Quaternion.identity);
         arrows.Add(arrow);
         pawn.GetComponent<PawnScript>().HideLegalMoves();
+        round = !round;
 
         GenerateAllLegalMoves();
     }

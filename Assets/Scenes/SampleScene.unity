@@ -305,7 +305,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pawnPrefabs:
   - {fileID: 1737738652188854781, guid: c6dc866a026d3524a938645630ce6b22, type: 3}
-  arrowPrefab: {fileID: 7802584717784104180, guid: c20cb0c1b62bc9449b42a4c6b0257ca4, type: 3}
+  - {fileID: 1737738652188854781, guid: f01153464235ce74e8fed47e1f29d3f6, type: 3}
+  arrowPrefab: {fileID: 915310999352447426, guid: c20cb0c1b62bc9449b42a4c6b0257ca4, type: 3}
+  startCoords:
+  - {x: 0, y: 3}
+  - {x: 3, y: 0}
+  - {x: 6, y: 0}
+  - {x: 9, y: 3}
+  - {x: 9, y: 6}
+  - {x: 6, y: 9}
+  - {x: 3, y: 9}
+  - {x: 0, y: 6}
+  round: 0
 --- !u!212 &1355205913
 SpriteRenderer:
   m_ObjectHideFlags: 0
