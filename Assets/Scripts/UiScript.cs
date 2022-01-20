@@ -10,11 +10,13 @@ public class UiScript : MonoBehaviour
     public GameObject endScreen;
     public Image roundImg;
     public Button startBtn;
+    public Button quickRestartBtn;
     public Sprite[] playerSprites;
 
     private void Start()
     {
         startBtn.onClick.AddListener(startGame);
+        quickRestartBtn.onClick.AddListener(startGame);
         endScreen.SetActive(false);
     }
 

@@ -50,5 +50,10 @@ public class MouseScript : MonoBehaviour
             }
         }
     }
+
+    public void Restart()
+    {
+        hasMoved = false;
+    }
 }
 

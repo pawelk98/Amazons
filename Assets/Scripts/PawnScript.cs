@@ -74,8 +74,9 @@ public class PawnScript : MonoBehaviour
 
     public void HideLegalMoves()
     {
-        foreach (GameObject legalMove in actionsList)
-            Destroy(legalMove);
+        if(actionsList != null)
+            foreach (GameObject legalMove in actionsList)
+                Destroy(legalMove);
     }
 
     public void MovePawn(Vector2 newPosition)

@@ -15,6 +15,7 @@ public class BoardScript : MonoBehaviour
     public GameObject arrowPrefab;
     public List<Vector2Int> startCoords;
     public UiScript uiScript;
+    public MouseScript mouseScript;
     GameObject[] pawns;
     List<GameObject> arrows;
     Fields[,] board;
@@ -35,6 +36,7 @@ public class BoardScript : MonoBehaviour
         {
             for (int i = 0; i < pawns.Length; i++)
             {
+                pawns[i].GetComponent<PawnScript>().HideLegalMoves();
                 Destroy(pawns[i]);
             }        
         }
@@ -58,6 +60,8 @@ public class BoardScript : MonoBehaviour
 
             board[startCoords[i].x, startCoords[i].y] = i < 4 ? Fields.PawnA : Fields.PawnB;
         }
+
+        mouseScript.Restart();
         uiScript.setRound(!round);
 
         GenerateAllLegalMoves();
