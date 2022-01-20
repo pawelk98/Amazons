@@ -14,11 +14,12 @@ public class BoardScript : MonoBehaviour
     public List<GameObject> pawnPrefabs;
     public GameObject arrowPrefab;
     public List<Vector2Int> startCoords;
+    public UiScript uiScript;
     GameObject[] pawns;
     List<GameObject> arrows;
     Fields[,] board;
     [HideInInspector]
-    public bool round;
+    bool round;
     bool playerAHasMoves;
     bool playerBHasMoves;
 
@@ -26,11 +27,26 @@ public class BoardScript : MonoBehaviour
     void Start()
     {
         SetUpBoard();
-        GenerateAllLegalMoves();
     }
 
-    void SetUpBoard()
+    public void SetUpBoard()
     {
+        if(pawns != null)
+        {
+            for (int i = 0; i < pawns.Length; i++)
+            {
+                Destroy(pawns[i]);
+            }        
+        }
+        
+        if(arrows != null)
+        {
+            for (int i = 0; i < arrows.Count; i++)
+            {
+                Destroy(arrows[i]);
+            }
+        }
+        round = false;
         board = new Fields[10, 10];
         arrows = new List<GameObject>();
         pawns = new GameObject[8];
@@ -42,6 +58,9 @@ public class BoardScript : MonoBehaviour
 
             board[startCoords[i].x, startCoords[i].y] = i < 4 ? Fields.PawnA : Fields.PawnB;
         }
+        uiScript.setRound(!round);
+
+        GenerateAllLegalMoves();
     }
 
     void GenerateAllLegalMoves()
@@ -60,9 +79,9 @@ public class BoardScript : MonoBehaviour
         }
 
         if (!playerAHasMoves)
-            Debug.Log("PLAYER B WINS");
-        if (!playerBHasMoves)
-            Debug.Log("PLAYER A WINS");
+            uiScript.setWinner(true);
+        else if (!playerBHasMoves)
+            uiScript.setWinner(false);
     }
 
     public bool IsActionLegal(Vector2Int position)
@@ -105,5 +124,11 @@ public class BoardScript : MonoBehaviour
         round = !round;
 
         GenerateAllLegalMoves();
+        uiScript.setRound(!round);
+    }
+
+    public bool GetRound()
+    {
+        return round;
     }
 }

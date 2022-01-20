@@ -21,8 +21,8 @@ public class MouseScript : MonoBehaviour
             {
                 if (!hasMoved)
                 {
-                    if (boardScript.round && hit.collider.gameObject.tag == "PlayerB"
-                    || !boardScript.round && hit.collider.gameObject.tag == "PlayerA")
+                    if (boardScript.GetRound() && hit.collider.gameObject.tag == "PlayerB"
+                    || !boardScript.GetRound() && hit.collider.gameObject.tag == "PlayerA")
                     {
                         if (previousPawn != null)
                             pawnScript.HideLegalMoves();
